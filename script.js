@@ -6,7 +6,7 @@ const notes = [
   'c6'
 ];
 
-// Correctly map file base name to answer button label
+// Mapping note name parts to the answer button labels
 const noteMapping = {
   'c': 'C',
   'cs': 'C#/Db',
@@ -98,13 +98,16 @@ function playReferenceNote() {
 
 function checkAnswer(selectedNote) {
   const correctAnswer = simplifyNote(currentNote);
+  const feedbackDiv = document.getElementById('feedback');
 
   if (selectedNote === correctAnswer) {
     correctCount++;
-    alert('Correct!');
+    feedbackDiv.textContent = 'Correct!';
+    feedbackDiv.className = 'feedback correct';
   } else {
     incorrectCount++;
-    alert(`Incorrect! The correct answer was ${correctAnswer}.`);
+    feedbackDiv.textContent = `Incorrect! The correct answer was ${correctAnswer}.`;
+    feedbackDiv.className = 'feedback incorrect';
   }
 
   updateScore();
@@ -113,12 +116,11 @@ function checkAnswer(selectedNote) {
 }
 
 function simplifyNote(note) {
-  // Handle sharps properly: if second char is 's' -> sharp
   let base = '';
   if (note[1] === 's') {
-    base = note.slice(0, 2); // e.g., 'gs'
+    base = note.slice(0, 2);
   } else {
-    base = note.charAt(0); // e.g., 'g'
+    base = note.charAt(0);
   }
   return noteMapping[base];
 }
@@ -135,6 +137,11 @@ function nextQuestion() {
   pickRandomNote();
   enableNoteButtons();
   nextBtn.disabled = true;
+
+  // Clear feedback
+  const feedbackDiv = document.getElementById('feedback');
+  feedbackDiv.textContent = '';
+  feedbackDiv.className = 'feedback';
 }
 
 function resetScore() {
