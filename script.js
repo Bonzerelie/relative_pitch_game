@@ -6,7 +6,7 @@ const notes = [
   'c6'
 ];
 
-// Map file name base to display label
+// Correctly map file base name to answer button label
 const noteMapping = {
   'c': 'C',
   'cs': 'C#/Db',
@@ -113,8 +113,13 @@ function checkAnswer(selectedNote) {
 }
 
 function simplifyNote(note) {
-  // Remove the octave number, e.g., 'c4' -> 'c', 'ds5' -> 'ds'
-  const base = note.length === 3 ? note.slice(0, 2) : note.charAt(0);
+  // Handle sharps properly: if second char is 's' -> sharp
+  let base = '';
+  if (note[1] === 's') {
+    base = note.slice(0, 2); // e.g., 'gs'
+  } else {
+    base = note.charAt(0); // e.g., 'g'
+  }
   return noteMapping[base];
 }
 
