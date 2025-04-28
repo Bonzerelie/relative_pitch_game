@@ -6,6 +6,22 @@ const notes = [
   'c6'
 ];
 
+// Map file name base to display label
+const noteMapping = {
+  'c': 'C',
+  'cs': 'C#/Db',
+  'd': 'D',
+  'ds': 'D#/Eb',
+  'e': 'E',
+  'f': 'F',
+  'fs': 'F#/Gb',
+  'g': 'G',
+  'gs': 'G#/Ab',
+  'a': 'A',
+  'as': 'A#/Bb',
+  'b': 'B'
+};
+
 const noteButtons = [
   'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'A#/Bb', 'B'
 ];
@@ -81,14 +97,14 @@ function playReferenceNote() {
 }
 
 function checkAnswer(selectedNote) {
-  const simplifiedNote = simplifyNote(currentNote);
+  const correctAnswer = simplifyNote(currentNote);
 
-  if (selectedNote === simplifiedNote) {
+  if (selectedNote === correctAnswer) {
     correctCount++;
     alert('Correct!');
   } else {
     incorrectCount++;
-    alert(`Incorrect! It was ${simplifiedNote}.`);
+    alert(`Incorrect! The correct answer was ${correctAnswer}.`);
   }
 
   updateScore();
@@ -97,11 +113,9 @@ function checkAnswer(selectedNote) {
 }
 
 function simplifyNote(note) {
-  let base = note.charAt(0).toUpperCase();
-  if (note[1] === 's') {
-    base += '#/Db';
-  }
-  return base;
+  // Remove the octave number, e.g., 'c4' -> 'c', 'ds5' -> 'ds'
+  const base = note.length === 3 ? note.slice(0, 2) : note.charAt(0);
+  return noteMapping[base];
 }
 
 function updateScore() {
